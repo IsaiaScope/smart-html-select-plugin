@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "smart-html-select",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "An Obsidian plugin to insert a smart HTML select element into the editor",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

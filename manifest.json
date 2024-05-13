@@ -1,11 +1,9 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
+	"id":"smart-html-select-plugin",
+	"name": "Smart HTML Select",
+	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Create select that change the markdown on change adding an action button to the ribbon (left sidebar)",
+	"author": "Iso",
 	"isDesktopOnly": false
 }
