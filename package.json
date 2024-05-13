@@ -1,6 +1,6 @@
 {
 	"name": "smart-html-select",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "An Obsidian plugin to insert a smart HTML select element into the editor",
 	"main": "main.js",
 	"scripts": {
