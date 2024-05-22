@@ -13,15 +13,9 @@ export default class SelectOnFirePlugin extends Plugin {
 			const randomId = this.generateUniqueId(
 				view.editor.getDoc().getValue()
 			);
-			const select = createEl("select", { attr: { id: randomId } });
-			for (let i = 1; i <= 5; i++) {
-				const option = createEl("option", {
-					text: `option ${i}`,
-					attr: { value: `${i}` },
-				});
-				select.appendChild(option);
-			}
-			view.editor.replaceSelection(select.outerHTML);
+			const select = `<select id="${randomId}">${Array.from({ length: 5 }, (_, i) => `<option value="${i + 1}">option ${i + 1}</option>`).join('')}</select>`;
+
+			view.editor.replaceSelection(select);
 		});
 	}
 	async onunload() {
@@ -58,7 +52,6 @@ export default class SelectOnFirePlugin extends Plugin {
 				const selectedOption =
 					changeEl.options[changeEl.selectedIndex].value;
 				const selectId = changeEl.id;
-				const NumberOfOptions = changeEl.options.length;
 
 				const view = this.app.workspace.activeEditor;
 				if (!view || !view.editor || !view.file) {
@@ -67,28 +60,18 @@ export default class SelectOnFirePlugin extends Plugin {
 
 				const options = changeEl.options;
 
-				Array.from(options).map(({ value, text }) => {
-					const option = createEl("option", {
-						text,
-						attr: {
-							value,
-							...(value === selectedOption && {
-								selected: "selected",
-							}),
-						},
-					});
-					changeEl.appendChild(option);
-				});
-
-				for (let i = 1; i <= NumberOfOptions; i++) {
-					changeEl.remove(0);
-				}
+				const newOptions = Array.from(options).map(({ value, text }) => {
+					const selectedAttr = value === selectedOption ? 'selected="selected"' : '';
+					return `<option value="${value}" ${selectedAttr}>${text}</option>`;
+				}).join('');
+				const newSelect = `<select id="${selectId}">${newOptions}</select>`;
+		
 
 				let page = await this.app.vault.read(view.file);
 
 				page = page.replace(
 					new RegExp(`<select id="${selectId}">[\\s\\S]*?</select>`),
-					`${changeEl.outerHTML}`
+					`${newSelect}`
 				);
 
 				this.app.vault.modify(view.file, page);
