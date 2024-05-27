@@ -1,21 +1,26 @@
 import { Plugin, WorkspaceWindow } from "obsidian";
+import { InsertSelectModal } from "./modal";
 
 export default class SelectOnFirePlugin extends Plugin {
+	commandName = "Insert HTML select";
+
 	async onload() {
 		this.app.workspace.on("window-open", this.setupWindowHandlers);
 		this.setupWindowHandlers(undefined as never, activeWindow);
+		const onSubmit = (optionNumber: number, emptyOption: boolean) => {
+			this.createSelect(optionNumber, emptyOption);
+		};
 
-		this.addRibbonIcon("flame", "Insert a HTML select", () => {
-			const view = this.app.workspace.activeEditor;
-			if (!view?.editor) {
-				return;
-			}
-			const randomId = this.generateUniqueId(
-				view.editor.getDoc().getValue()
-			);
-			const select = `<select id="${randomId}">${Array.from({ length: 5 }, (_, i) => `<option value="${i + 1}">option ${i + 1}</option>`).join('')}</select>`;
+		this.addRibbonIcon("flame", this.commandName, () => {
+			new InsertSelectModal(this.app, 5, onSubmit).open();
+		});
 
-			view.editor.replaceSelection(select);
+		this.addCommand({
+			id: "insert-html-select",
+			name: this.commandName,
+			editorCallback: () => {
+				new InsertSelectModal(this.app, 5, onSubmit).open();
+			},
 		});
 	}
 	async onunload() {
@@ -60,12 +65,16 @@ export default class SelectOnFirePlugin extends Plugin {
 
 				const options = changeEl.options;
 
-				const newOptions = Array.from(options).map(({ value, text }) => {
-					const selectedAttr = value === selectedOption ? 'selected="selected"' : '';
-					return `<option value="${value}" ${selectedAttr}>${text}</option>`;
-				}).join('');
+				const newOptions = Array.from(options)
+					.map(({ value, text }) => {
+						const selectedAttr =
+							value === selectedOption
+								? 'selected="selected"'
+								: "";
+						return `<option value="${value}" ${selectedAttr}>${text}</option>`;
+					})
+					.join("");
 				const newSelect = `<select id="${selectId}">${newOptions}</select>`;
-		
 
 				let page = await this.app.vault.read(view.file);
 
@@ -78,4 +87,22 @@ export default class SelectOnFirePlugin extends Plugin {
 			}
 		);
 	};
+
+	private createSelect(optionNumber: number, emptyOption: boolean) {
+		const view = this.app.workspace.activeEditor;
+
+		if (!view?.editor) {
+			return;
+		}
+		const randomId = this.generateUniqueId(view.editor.getDoc().getValue());
+		const emptyOptionString = emptyOption
+			? `<option value="0"></option>`
+			: "";
+		const select = `<select id="${randomId}">${emptyOptionString}${Array.from(
+			{ length: optionNumber },
+			(_, i) => `<option value="${i + 1}">option ${i + 1}</option>`
+		).join("")}</select>`;
+
+		view.editor.replaceSelection(select);
+	}
 }

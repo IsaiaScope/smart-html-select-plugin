@@ -1,7 +1,7 @@
 {
 	"id":"smart-html-select",
 	"name": "Smart HTML Select",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"minAppVersion": "0.15.0",
 	"description": "Create select that change the markdown on change adding an action button to the ribbon (left sidebar)",
 	"author": "Isaia Riva",
