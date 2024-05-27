@@ -1,9 +1,9 @@
 {
 	"id":"smart-html-select",
 	"name": "Smart HTML Select",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"minAppVersion": "0.15.0",
-	"description": "Create select that change the markdown on change adding an action button to the ribbon (left sidebar)",
+	"description": "This plugin is useful to add an HTML select to your note with the possibility to configure the number of options. Integrates a logic behind the scene to change the markdown when in view mode the select value change.",
 	"author": "Isaia Riva",
 	"isDesktopOnly": false
 }
